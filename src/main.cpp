@@ -70,14 +70,14 @@ int main() {
     if(command=="exit"){ 
       break;
     }
-    else if(command =="echo "){
+    else if(command =="echo"){
        for(int i = 1; i < args.size(); i++){
         std::cout << args[i];
         if(i < args.size() - 1) std::cout << " "; 
       }
       std::cout << "\n";
     }
-    else if(command=="type "){
+    else if(command=="type"){
       if (args.size() > 1) {
         handleType(args[1]);  
       }

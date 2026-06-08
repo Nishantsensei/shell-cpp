@@ -9,8 +9,15 @@ int main() {
     std::cout << "$ ";
     std::string command;
     std::getline(std::cin,command);
-    if(command=="exit") return false;
-    std::cout<< command << ": command not found" <<std::endl;
+    if(command=="exit"){ 
+      break;
+    }
+    else if(command.substr(0,5) =="echo "){
+      std::cout<<command.substr(5)<<'\n';
+    }
+    else{
+      std::cout<< command << ": command not found" <<std::endl;
+    }
     
   }
 }

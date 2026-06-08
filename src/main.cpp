@@ -37,7 +37,7 @@ std::string findInPath(const std::string& cmd){
 
 void handleType(const std::string& cmd){
   if(isBuiltin(cmd)){
-    std::cout <<cmd<< "is a shell builtin\n";
+    std::cout <<cmd<< " is a shell builtin\n";
   }else{
     std::string path=findInPath(cmd);
     if(!path.empty()){

@@ -41,7 +41,7 @@ void handleType(const std::string& cmd){
   }else{
     std::string path=findInPath(cmd);
     if(!path.empty()){
-      std::cout << cmd <<"is" << path<<"\n";
+      std::cout << cmd <<" is " << path<<"\n";
     }else{
       std::cout <<cmd<< ": not found\n";
     }

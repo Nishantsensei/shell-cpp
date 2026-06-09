@@ -5,6 +5,8 @@
 #include <fstream>
 #include <cstdlib>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 bool isBuiltin(const std::string& cmd){
   std::vector<std::string> builtins ={"echo","exit","type","pwd","cd"};
@@ -47,6 +49,36 @@ void handleType(const std::string& cmd){
     }
   }
 }
+void executeExternal(const std::string& executable,
+                     const std::vector<std::string>& args)
+{
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        // Child process
+
+        std::vector<char*> argv;
+
+        for (const auto& arg : args) {
+            argv.push_back(const_cast<char*>(arg.c_str()));
+        }
+
+        argv.push_back(nullptr);
+
+        execvp(executable.c_str(), argv.data());
+
+        // Only reaches here if execvp fails
+        perror("execvp");
+        exit(1);
+    }
+    else if (pid > 0) {
+        // Parent process waits
+        waitpid(pid, nullptr, 0);
+    }
+    else {
+        perror("fork");
+    }
+}
 
 
 int main() {
@@ -82,8 +114,14 @@ int main() {
         handleType(args[1]);  
       }
     }
-    else{
-      std::cout<< command << ": command not found" <<std::endl;
+    else {
+    std::string executable = findInPath(command);
+
+      if (!executable.empty()) {
+          executeExternal(executable, args);
+      } else {
+          std::cout << command<< ": command not found"<< std::endl;
+      }
     }
   }
 }

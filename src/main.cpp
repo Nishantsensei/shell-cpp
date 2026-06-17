@@ -49,6 +49,7 @@ void handleType(const std::string& cmd){
     }
   }
 }
+
 void executeExternal(const std::string& executable,
                      const std::vector<std::string>& args)
 {
@@ -114,6 +115,14 @@ int main() {
         handleType(args[1]);  
       }
     }
+    else if(command == "pwd"){
+      char cwd[1024];
+
+      if(getcwd(cwd, sizeof(cwd)) != nullptr){
+          std::cout << cwd << "\n";
+      }
+    }
+    
     else {
     std::string executable = findInPath(command);
 

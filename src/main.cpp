@@ -145,22 +145,30 @@ int main()
         std::cout << cwd << "\n";
       }
     }
+
     else if(command == "cd")
     {
-      if(args.size()>2)
+      if(args.size() < 2)
       {
         continue;
       }
-      if(args[1]=="~")
+      int result;
+
+      if(args[1] == "~")
       {
-        chdir(getenv("HOME"));
+        result = chdir(getenv("HOME"));
       }
-      else if(chdir(args[1].c_str())!=0)
+      else
       {
-        std::cout<< "cd: "<< args[1] << ": No such file or directory"<< std::endl;
+        result = chdir(args[1].c_str());
+      }
+
+      if(result != 0)
+      {
+        std::cout << "cd: " << args[1] << ": No such file or directory\n";
       }
     }
-    
+  
     else 
     {
     std::string executable = findInPath(command);

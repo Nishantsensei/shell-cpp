@@ -151,11 +151,14 @@ int main()
       {
         continue;
       }
-      if(chdir(args[1].c_str())!=0)
+      if(args[1]=="~")
+      {
+        chdir(getenv("HOME"));
+      }
+      else if(chdir(args[1].c_str())!=0)
       {
         std::cout<< "cd: "<< args[1] << ": No such file or directory"<< std::endl;
       }
-      
     }
     
     else 

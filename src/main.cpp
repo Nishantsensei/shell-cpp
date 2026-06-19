@@ -108,11 +108,34 @@ int main()
     std::getline(std::cin,input);
 
     std::vector<std::string> args;
-    std::stringstream ss(input);
-    std::string word;
-    while(ss>>word){
-      args.push_back(word);
+    std::string current;
+    bool inSingleQuote = false;
+
+    for(char c : input)
+    {
+        if(c == '\'')
+        {
+          inSingleQuote = !inSingleQuote;
+        }
+        else if(c == ' ' && !inSingleQuote)
+        {
+          if(!current.empty())
+          {
+            args.push_back(current);
+            current.clear();
+          }
+        }
+        else
+        {
+          current += c;
+        }
     }
+
+    if(!current.empty())
+    {
+      args.push_back(current);
+    }
+    
     if(args.empty())continue;
     std::string command = args[0];
 
@@ -120,15 +143,18 @@ int main()
     { 
       break;
     }
+
     else if(command =="echo")
     {
-       for(int i = 1; i < args.size(); i++)
-       {
+      for(int i = 1; i < args.size(); i++)
+      {
         std::cout << args[i];
         if(i < args.size() - 1) std::cout << " "; 
       }
       std::cout << "\n";
+      
     }
+
     else if(command=="type")
     {
       if (args.size() > 1) 
@@ -136,6 +162,7 @@ int main()
         handleType(args[1]);  
       }
     }
+
     else if(command == "pwd")
     {
       char cwd[1024];

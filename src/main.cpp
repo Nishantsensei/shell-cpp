@@ -118,12 +118,10 @@ int main()
       {
         inSingleQuote = !inSingleQuote;
       }
-
-      if(c == '"' && !inSingleQuote)
+      else if(c == '"' && !inSingleQuote)
       {
         inDoubleQuote = !inDoubleQuote;
       }
-
       else if(c == ' ' && !inSingleQuote && !inDoubleQuote)
       {
         if(!current.empty())

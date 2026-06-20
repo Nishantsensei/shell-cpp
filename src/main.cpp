@@ -110,32 +110,39 @@ int main()
     std::vector<std::string> args;
     std::string current;
     bool inSingleQuote = false;
+    bool inDoubleQuote = false;
 
     for(char c : input)
     {
-        if(c == '\'')
+      if(c == '\'' && !inDoubleQuote)
+      {
+        inSingleQuote = !inSingleQuote;
+      }
+
+      if(c == '"' && !inSingleQuote)
+      {
+        inDoubleQuote = !inDoubleQuote;
+      }
+
+      else if(c == ' ' && !inSingleQuote && !inDoubleQuote)
+      {
+        if(!current.empty())
         {
-          inSingleQuote = !inSingleQuote;
+          args.push_back(current);
+          current.clear();
         }
-        else if(c == ' ' && !inSingleQuote)
-        {
-          if(!current.empty())
-          {
-            args.push_back(current);
-            current.clear();
-          }
-        }
-        else
-        {
-          current += c;
-        }
+      }
+      else
+      {
+        current += c;
+      }
     }
 
     if(!current.empty())
     {
       args.push_back(current);
     }
-    
+
     if(args.empty())continue;
     std::string command = args[0];
 

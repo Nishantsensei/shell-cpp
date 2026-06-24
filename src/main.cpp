@@ -111,10 +111,20 @@ int main()
     std::string current;
     bool inSingleQuote = false;
     bool inDoubleQuote = false;
+    bool escaped = false;
 
     for(char c : input)
-    {
-      if(c == '\'' && !inDoubleQuote)
+    {  
+      if(escaped)
+      {
+        current += c;
+        escaped = false;
+      }
+      else if(c == '\\' && !inSingleQuote && !inDoubleQuote)
+      {
+        escaped = true;
+      }
+      else if(c == '\'' && !inDoubleQuote)
       {
         inSingleQuote = !inSingleQuote;
       }
